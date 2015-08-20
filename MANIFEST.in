@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include api_handler *.css
+recursive-include api_handler *.csv
+recursive-include api_handler *.html
+recursive-include api_handler *.ico
+recursive-include api_handler *.js
+recursive-include api_handler *.json
+recursive-include api_handler *.md
+recursive-include api_handler *.png
+recursive-include api_handler *.py
+recursive-include api_handler *.svg
+recursive-include api_handler *.txt
+recursive-exclude api_handler *.pyc
