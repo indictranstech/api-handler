@@ -19,13 +19,20 @@ def handle():
 	parts = frappe.request.path[1:].split("/",3)
 	method_name = version = api_name = method = None
 
-	if len(parts) == 3:
+	if len(parts) <= 2:
+		if parts[1] == 'login':
+			frappe.local.form_dict.cmd = '.'.join(map(str,[parts[0],parts[1]]))
+			frappe.local.form_dict.op = "login"
+			return handler.handle()
+
+	elif len(parts) == 3:
 		api_name = parts[0]
 		version = parts[1]
 		method_name = parts[2]
 		method = '.'.join(map(str,[api_name,"versions",version,method_name]))
 		frappe.local.form_dict.cmd = method
 		return handler.handle()
+
 	else:
 		#invalid url
 		pass	

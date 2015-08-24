@@ -35,6 +35,9 @@ class UnsupportedMediaType(Exception):
 class Redirect(Exception):
 	status_code = 301
 
+class NoAllowed(Exception):
+	status_code = 403
+
 class DuplicateEntryError(NameError):pass
 class InvalidDataError(ValidationError): pass
 class UnknownDomainError(Exception): pass

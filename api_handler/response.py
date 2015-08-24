@@ -15,12 +15,10 @@ from werkzeug.wsgi import wrap_file
 from werkzeug.wrappers import Response
 from werkzeug.exceptions import NotFound, Forbidden
 
-def report_error(status_code):
-	if status_code!=404 or frappe.conf.logging:
-		frappe.errprint(frappe.utils.get_traceback())
-
+def report_error(status_code,message):
+	frappe.response["code"] = status_code
+	frappe.response["message"] = message
 	response = build_response("json")
-	response.status_code = status_code
 	return response
 
 def build_response(response_type=None):
