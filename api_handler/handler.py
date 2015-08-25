@@ -16,6 +16,7 @@ def handle():
 
 	if op == 'login':
 		login_user()
+
 	elif cmd != 'login':
 		user = manage_user()
 		if user:
@@ -93,7 +94,7 @@ def manage_user():
 		#user = frappe.db.get_value("User",{"user_id":user_id},"name")
 		user = "aaa"
 		if not user:
-			report_error(417,"user_id not provided")
+			report_error(417,"user_id not valid")
 			return False
 		else:
 			try:
