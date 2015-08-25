@@ -40,11 +40,14 @@ def execute_cmd(cmd, async=False):
 
 		
 		ret = frappe.call(method, **frappe.form_dict)
-		ret["code"] = 200
-		if ret:
+
+		if isinstance(ret,dict):
 			for key in ret:
-				frappe.response[key] = ret[key] 	
-	
+				frappe.response[key] = ret[key]
+		else:		
+			frappe.response["data"] = ret
+		frappe.response["code"] = 200		
+				 		
 	except Exception, e:
 		http_status_code = getattr(e, "status_code", 500)
 		message = getattr(e, "message", 500)
@@ -77,32 +80,37 @@ def login_user():
 	return ret
 
 def manage_user():
-	data = json.loads(frappe.form_dict.data)
-	sid = data.get('sid')
-	user_id = data.get('user_id')
+	if frappe.form_dict.data:
+		data = json.loads(frappe.form_dict.data)		
+		sid = data.get('sid')
+		user_id = data.get('user_id')
 
-	if not sid:
-		report_error(417,"sid not provided")
-		return False		
+		if not sid:
+			report_error(417,"sid not provided")
+			return False		
 
-	elif sid and not user_id:
-		report_error(417,"user_id not provided")
-		return False
-
-	elif sid and user_id:
-		#user = frappe.db.get_value("User",{"user_id":user_id},"name")
-		user = "aaa"
-		if not user:
+		elif sid and not user_id:
 			report_error(417,"user_id not provided")
 			return False
-		else:
-			try:
-				frappe.form_dict["sid"] = sid 
-				loginmgr = frappe.auth.LoginManager()
-			except frappe.SessionStopped,e:
-				http_status_code = getattr(e, "http_status_code", 500)
-				frappe.response["code"] = http_status_code
+
+		elif sid and user_id:
+			#user = frappe.db.get_value("User",{"user_id":user_id},"name")
+			user = "aaa"
+			print "in manage user"
+			if not user:
+				report_error(417,"user_id not provided")
 				return False
-		
-	return True		
+			else:
+				try:
+					print "in session mange"
+					frappe.form_dict["sid"] = sid 
+					loginmgr = frappe.auth.LoginManager()
+				except frappe.SessionStopped,e:
+					http_status_code = getattr(e, "http_status_code", 500)
+					frappe.response["code"] = http_status_code
+					return False
+		return True
+	else:
+		report_error(417,"Input not provided")
+		return False			
 
