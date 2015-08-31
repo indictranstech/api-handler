@@ -15,7 +15,7 @@ def handle():
 	op = frappe.local.form_dict.op
 
 	if op == 'login':
-		login_user()
+		login_user()		
 	elif cmd != 'login':
 		user = manage_user()
 		if user:
@@ -96,13 +96,11 @@ def manage_user():
 		elif sid and user_id:
 			#user = frappe.db.get_value("User",{"user_id":user_id},"name")
 			user = "aaa"
-			print "in manage user"
 			if not user:
 				report_error(417,"user_id not provided")
 				return False
 			else:
 				try:
-					print "in session mange"
 					frappe.form_dict["sid"] = sid 
 					loginmgr = frappe.auth.LoginManager()
 				except frappe.SessionStopped,e:
