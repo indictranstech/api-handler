@@ -53,3 +53,13 @@ class EmptyTableError(ValidationError): pass
 class InvalidEmailAddressError(ValidationError): pass
 class TemplateNotFoundError(ValidationError): pass
 class UniqueValidationError(ValidationError): pass
+class UserRegisteredButDisabledError(ValidationError):pass
+class UserAlreadyRegisteredError(ValidationError):pass
+class UserRegisterationError(ValidationError):pass
+class ForgotPasswordOperationFailed(ValidationError):pass
+class InvalidPasswordError(ValidationError):pass
+class GetUserProfileOperationFailed(ValidationError):pass
+class UserProfileUpdationFailed(ValidationError):pass
+class LogOutOperationFailed(ValidationError):pass
+class GetStateInfoOperationFailed(ValidationError):pass
+class ImageUploadError(ValidationError):pass
