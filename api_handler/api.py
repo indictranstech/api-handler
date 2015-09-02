@@ -6,6 +6,7 @@ import json
 import frappe
 from frappe import _
 import handler
+from response import build_response,report_error
 
 def handle():
 	"""
@@ -32,11 +33,10 @@ def handle():
 		method = '.'.join(map(str,[api_name,"versions",version,method_name]))
 		frappe.local.form_dict.cmd = method
 		return handler.handle()
-
 	else:
 		#invalid url
-		pass	
+		return report_error(417,"Invalid URL")	
 
-	#return build_response("json")
+	
 
 

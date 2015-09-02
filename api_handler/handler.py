@@ -14,6 +14,12 @@ def handle():
 	cmd = frappe.local.form_dict.cmd
 	op = frappe.local.form_dict.op
 
+	try :
+		method = get_attr(cmd)
+
+	except AttributeError, e:
+		return report_error(500,"Invalid API-URL")
+
 	if op == 'login':
 		login_user()
 	elif cmd != 'login':
@@ -25,7 +31,7 @@ def handle():
 
 def execute_cmd(cmd, async=False):
 	"""execute a request as python module"""
-
+ 				
 	method = get_attr(cmd)
 	
 	try:
@@ -47,7 +53,8 @@ def execute_cmd(cmd, async=False):
 		else:		
 			frappe.response["data"] = ret
 		frappe.response["code"] = 200		
-				 		
+
+
 	except Exception, e:
 		http_status_code = getattr(e, "status_code", 500)
 		message = getattr(e, "message", 500)
@@ -65,6 +72,7 @@ def execute_cmd(cmd, async=False):
 
 def get_attr(cmd):
 	"""get method object from cmd"""
+
 	if '.' in cmd:
 		method = frappe.get_attr(cmd)
 	else:
@@ -72,13 +80,27 @@ def get_attr(cmd):
 	frappe.log("method:" + cmd)
 	return method
 
+	
+
 
 def login_user():
-	cmd = frappe.local.form_dict.cmd
-	method = get_attr(cmd)
-	ret = frappe.call(method, **frappe.form_dict)
-	return ret
+	try: 
+		cmd = frappe.local.form_dict.cmd
+		method = get_attr(cmd)
+		ret = frappe.call(method, **frappe.form_dict)
+		return ret
 
+	except Exception, e:
+		http_status_code = getattr(e, "status_code", 500)
+		message = getattr(e, "message", 500)
+		report_error(http_status_code,message)
+	
+	finally:
+		import time
+		ts = int(time.time())
+		frappe.response["timestamp"] = ts
+	
+		
 def manage_user():
 	if frappe.form_dict.data:
 		data = json.loads(frappe.form_dict.data)		
