@@ -15,6 +15,9 @@ class AuthenticationError(Exception):
 	status_code = 401
 
 class PermissionError(Exception):
+	def __init__(self,operation,message):
+		self.operation = operation
+		self.message = message
 	status_code = 403
 
 class DoesNotExistError(ValidationError):
