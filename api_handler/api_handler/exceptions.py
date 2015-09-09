@@ -63,3 +63,7 @@ class UserProfileUpdationFailed(ValidationError):pass
 class LogOutOperationFailed(ValidationError):pass
 class GetStateInfoOperationFailed(ValidationError):pass
 class ImageUploadError(ValidationError):pass
+class SearchGroupOperationFailed(ValidationError):pass
+class GetPropertyOperationFailed(ValidationError):pass
+class ElasticSearchException(ValidationError):pass
+class ElasticInvalidInputFormatError(ValidationError):pass
