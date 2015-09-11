@@ -67,3 +67,4 @@ class SearchGroupOperationFailed(ValidationError):pass
 class GetPropertyOperationFailed(ValidationError):pass
 class ElasticSearchException(ValidationError):pass
 class ElasticInvalidInputFormatError(ValidationError):pass
+class OperationFailed(ValidationError):pass
