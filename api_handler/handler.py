@@ -13,18 +13,18 @@ def handle():
 	"""handle request"""
 	cmd = frappe.local.form_dict.cmd
 	op = frappe.local.form_dict.op
+	method = None
 
 	try :
 		method = get_attr(cmd)
-
 	except AttributeError, e:
 		return report_error(500,"Invalid API-URL")
 
 	if op == 'login':
 		login_user()
 	elif cmd != 'login':
-		is_valid_user = manage_user()
-		if is_valid_user:
+		is_guest = True if (method in frappe.guest_methods) else False
+		if is_valid_request(is_guest=is_guest):
 			execute_cmd(cmd)
 
 	return build_response("json")
@@ -92,7 +92,7 @@ def login_user():
 		ts = int(time.time())
 		frappe.response["timestamp"] = ts
 
-def manage_user():
+def is_valid_request(is_guest=False):
 	method = frappe.local.request.method
 	sid = None
 
@@ -107,7 +107,7 @@ def manage_user():
 		report_error(417,"Input not provided")
 		return False
 
-	if not sid:
+	if not sid and is_guest is False:
 		report_error(417,"sid not provided")
 		return False		
 
