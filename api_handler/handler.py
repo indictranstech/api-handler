@@ -58,7 +58,7 @@ def execute_cmd(cmd, async=False):
 
 	except Exception, e:
 		http_status_code = getattr(e, "status_code", 500)
-		message = getattr(e, "message", 500)
+		message = getattr(e, "message", 500) or "Error"
 		report_error(http_status_code,message)
 
 	finally:
