@@ -53,7 +53,6 @@ def execute_cmd(cmd, async=False):
 		
 		frappe.response["code"] = 200
 		frappe.response["user"] = frappe.session.user
-		frappe.response["sid"] = frappe.session.sid
 		frappe.response["full_name"] = get_user_fullname(frappe.session.user)
 
 	except Exception, e:
