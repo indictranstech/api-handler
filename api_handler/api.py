@@ -25,10 +25,10 @@ def handle():
 	# log_id = log_request(frappe.local.request, frappe.local.form_dict)
 
 	if len(parts) <= 2:
-		if parts[1] == 'login':
-			frappe.local.form_dict.cmd = '.'.join(map(str,[parts[0],"login"]))
-			frappe.local.form_dict.op = "login"
-			response = handler.handle()
+		# if parts[1] == 'login':
+		frappe.local.form_dict.cmd = '.'.join(map(str,[parts[0],parts[1]]))
+		frappe.local.form_dict.op = parts[1]
+		response = handler.handle()
 
 	else:
 		api_name = parts[0]
