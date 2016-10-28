@@ -96,8 +96,12 @@ def is_valid_request(is_guest=False):
 	sid = None
 
 	if method in ["POST", "PUT", "DELETE"] and frappe.form_dict.data:
-		data = json.loads(frappe.form_dict.data)
-		sid = data.get('sid')
+		try:
+			data = json.loads(frappe.form_dict.data)
+			sid = data.get('sid')
+		except Exception as e:
+			data = None
+			sid = None
 
 	elif method == "GET" and frappe.form_dict:
 		sid = frappe.form_dict.get("sid")		
