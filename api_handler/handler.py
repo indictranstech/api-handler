@@ -56,6 +56,7 @@ def execute_cmd(cmd, async=False):
 		frappe.response["full_name"] = get_user_fullname(frappe.session.user)
 
 	except Exception, e:
+		print e
 		http_status_code = getattr(e, "status_code", 500)
 		message = getattr(e, "message", 500) or "Error"
 		report_error(http_status_code,message)
@@ -95,16 +96,16 @@ def is_valid_request(is_guest=False):
 	method = frappe.local.request.method
 	sid = None
 
-	if method in ["POST", "PUT", "DELETE"] and frappe.form_dict.data:
+	if method in ["POST", "PUT"] and frappe.form_dict.data:
 		try:
 			data = json.loads(frappe.form_dict.data)
 			sid = data.get('sid')
 		except Exception as e:
-			data = None
-			sid = None
+			report_error(417,"Invalid Request")
+			return False
 
-	elif method == "GET" and frappe.form_dict:
-		sid = frappe.form_dict.get("sid")		
+	elif method in ["GET", "DELETE"] and frappe.form_dict:
+		sid = frappe.form_dict.get("sid")
 
 	else:
 		report_error(417,"Input not provided")
