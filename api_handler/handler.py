@@ -99,13 +99,13 @@ def is_valid_request(is_guest=False):
 	if method in ["POST", "PUT"] and frappe.form_dict.data:
 		try:
 			data = json.loads(frappe.form_dict.data)
-			sid = data.get('sid')
+			sid = data.get('sid') or "Guest"
 		except Exception as e:
 			report_error(417,"Invalid Request")
 			return False
 
 	elif method in ["GET", "DELETE"] and frappe.form_dict:
-		sid = frappe.form_dict.get("sid")
+		sid = frappe.form_dict.get("sid") or Guest
 
 	else:
 		report_error(417,"Input not provided")
@@ -116,7 +116,7 @@ def is_valid_request(is_guest=False):
 		return False		
 
 	try:
-		frappe.form_dict["sid"] = sid 
+		frappe.form_dict["sid"] = sid or "Guest"
 		loginmgr = frappe.auth.LoginManager()
 	except frappe.SessionStopped,e:
 		http_status_code = getattr(e, "http_status_code", 500)
