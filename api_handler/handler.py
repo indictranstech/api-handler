@@ -105,7 +105,7 @@ def is_valid_request(is_guest=False):
 			return False
 
 	elif method in ["GET", "DELETE"] and frappe.form_dict:
-		sid = frappe.form_dict.get("sid") or Guest
+		sid = frappe.form_dict.get("sid") or "Guest"
 
 	else:
 		report_error(417,"Input not provided")
